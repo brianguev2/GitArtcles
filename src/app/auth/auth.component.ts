@@ -1,6 +1,8 @@
+import { UserService } from './../core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Errors } from '../core/models';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,12 +13,14 @@ import { ActivatedRoute } from '@angular/router';
 export class AuthComponent implements OnInit {
   authType: String = '';
   title: String = '';
-  // tslint:disable-next-line:no-inferrable-types
-  isSubmitting: boolean = false;
+  errors: Errors = {errors: {}};
+  isSubmitting = false;
   authForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+    private userService: UserService,
     private fb: FormBuilder
   ) {
     this.authForm = this.fb.group({
@@ -37,8 +41,17 @@ export class AuthComponent implements OnInit {
 
   submitForm() {
     this.isSubmitting = true;
+    this.errors = {errors: {}};
 
     const credentials = this.authForm.value;
-    console.log(credentials);
+    this.userService
+    .attemptAuth(this.authType, credentials)
+    .subscribe(
+      data => this.router.navigateByUrl('/'),
+      err => {
+        this.errors = err;
+        this.isSubmitting = false;
+      }
+    );
   }
 }
