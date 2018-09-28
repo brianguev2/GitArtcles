@@ -6,7 +6,7 @@ import { UserService, User } from '../../core';
   selector: 'layout-header',
   templateUrl: './header.component.html'
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
   constructor(
     private userService: UserService
   ) {}

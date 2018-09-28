@@ -1,7 +1,6 @@
 import { CoreModule } from './core/core.module';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
 import { AuthModule } from './auth/auth.module';
 
 import { AppComponent } from './app.component';
