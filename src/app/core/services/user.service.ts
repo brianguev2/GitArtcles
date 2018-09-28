@@ -14,13 +14,29 @@ export class UserService {
   public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
 
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
-  private isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   constructor (
     private apiService: ApiService,
     private http: HttpClient,
     private jwtService: JwtService
   ) {}
+
+  // Verify JWT in localstorage with server & load user's info.
+  // This runs once on application startup.
+  populate() {
+    // if JWT detected, attempt to get & and store user's info
+    if (this.jwtService.getToken()) {
+      this.apiService.get('/user')
+      .subscribe(
+        data => this.setAuth(data.user),
+        err => this.purgeAuth()
+      );
+    } else {
+      // Remove any potential remants of previous auth states
+      this.purgeAuth();
+    }
+  }
 
   setAuth(user: User) {
     // Save JWT sent from server in localstorage
@@ -29,6 +45,15 @@ export class UserService {
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
     this.isAuthenticatedSubject.next(true);
+  }
+
+  purgeAuth() {
+    // Remove JWT from localStorage
+    this.jwtService.destroyToken();
+    // Set current user to an empty object
+    this.currentUserSubject.next({} as User);
+    // Set auth status to false
+    this.isAuthenticatedSubject.next(false);
   }
 
   attemptAuth(type, credentials): Observable<User> {
