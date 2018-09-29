@@ -6,7 +6,6 @@ import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
 import {
-  FooterComponent,
   HeaderComponent,
   SharedModule
 } from './shared';
@@ -15,7 +14,6 @@ import { AppRoutingModule } from './app-routing.module';
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent,
     HeaderComponent
   ],
   imports: [

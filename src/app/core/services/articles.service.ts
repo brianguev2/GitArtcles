@@ -30,7 +30,7 @@ export class ArticlesService {
   }
 
   get(slug): Observable<Article> {
-    return this.apiService.get('/article/' + slug)
+    return this.apiService.get('/articles/' + slug)
       .pipe(map(data => data.article));
   }
 
@@ -41,12 +41,12 @@ export class ArticlesService {
   save(article): Observable<Article> {
     // If we're updating an existing article
     if (article.slug) {
-      return this.apiService.put('/article/' + article.slug, {article: article})
+      return this.apiService.put('/articles/' + article.slug, {article: article})
       .pipe(map(data => data.article));
 
       // Otherwise create a new article
     } else {
-      return this.apiService.post('/article/', { article: article})
+      return this.apiService.post('/articles/', { article: article})
       .pipe(map(data => data.article));
     }
 }
