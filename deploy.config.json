@@ -1,0 +1,6 @@
+{
+  "AwsAccessKeyId": "AKIAJLWJ3FDMP4GZEXRA",
+  "AwsSecretAccessKey": "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",
+  "Bucket": "http://gitarticles.s3-website.us-east-2.amazonaws.com",
+  "BucketRegion": "us-east-2"
+}
